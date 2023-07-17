@@ -14,14 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "./public")));
 
-// Send the notes.html file when '/notes' is requested
-app.get("/notes", (req, res) => {
-  res.sendFile(path.join(__dirname, "./public/notes.html"));
-});
-
-// Define the port the server should listen on
-const PORT = process.env.PORT || 3000;
-
 // Import the existing notes from db.json
 let notes = require("./db/db.json");
 
@@ -38,6 +30,16 @@ app.post("/api/notes", (req, res) => {
   fs.writeFileSync("./db/db.json", JSON.stringify(notes));
   res.json(newNote);
 });
+
+// TODO: Delete a note function
+
+// Send the notes.html file when '/notes' is requested
+app.get("/notes", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/notes.html"));
+});
+
+// Define the port the server should listen on
+const PORT = process.env.PORT || 3000;
 
 // Start the server
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
