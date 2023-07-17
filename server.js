@@ -31,11 +31,27 @@ app.post("/api/notes", (req, res) => {
   res.json(newNote);
 });
 
-// TODO: Delete a note function
+// Delete a note
+app.delete("/api/notes/:id", (req, res) => {
+  const id = req.params.id;
+  const noteIndex = notes.findIndex((note) => note.id === id);
+  if (noteIndex !== -1) {
+    notes.splice(noteIndex, 1);
+    fs.writeFileSync("./db/db.json", JSON.stringify(notes));
+    res.json({ message: `Deleted note with id ${id}` });
+  } else {
+    res.status(404).json({ message: `No note found with id ${id}` });
+  }
+});
 
 // Send the notes.html file when '/notes' is requested
 app.get("/notes", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/notes.html"));
+});
+
+// Send the index.html file for all other requests
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 // Define the port the server should listen on
