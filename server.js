@@ -1,14 +1,19 @@
 // Import necessary packages
-const express = require("express");
-const path = require("path");
-const fs = require("fs");
-const { v4: uuidv4 } = require("uuid");
+const express = require("express"); // Import the Express.js framework
+const path = require("path"); // Import the path module
+const fs = require("fs"); // Import the file system module
+const { v4: uuidv4 } = require("uuid"); // Import the UUID package for generating unique IDs
 
 // Create an instance of an Express.js app
 const app = express();
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "./public")));
+
+// Send the notes.html file when '/notes' is requested
+app.get("/notes", (req, res) => {
+  res.sendFile(path.join(__dirname, "./public/notes.html"));
+});
 
 // Define the port the server should listen on
 const PORT = process.env.PORT || 3000;
